@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery - Moodal</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <style>
+      /* Ensure footer stays at the bottom */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .container {
+        flex: 1;
+        width: 100%;
+        max-width: 1200px; /* Match the width of the hero section */
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+      footer {
+        text-align: center;
+        background-color: #f8f8f8;
+        padding: 10px 0;
+      }
+      .sliding-window {
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+      }
+      .slides {
+        display: flex;
+        transition: transform 1s ease-in-out;
+      }
+      .slides img {
+        width: 100%;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo-space">
+        <img src="logo.png" alt="Logo" class="logo" />
+      </div>
+      <h1 class="project-name">Moodal: A Mood based Digital Art Generator</h1>
+      <nav>
+        <ul>
+          <li><a href="index.htm">Home</a></li>
+          <li><a href="about.htm">About</a></li>
+          <li><a href="gallery.htm">Gallery</a></li>
+          <li><a href="contact.htm">Contact Us</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Gallery</h1>
+        <p>Experience the interactive collection of digital art.</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Art Categories with Sliding Images -->
+      <section class="art-categories">
+        <h2>Art Categories</h2>
+
+        <div class="art-category">
+          <h3>Abstract</h3>
+          <div class="sliding-window">
+            <div class="slides">
+              <img src="abstract1.jpg" alt="Abstract Art 1" />
+              <img src="abstract2.jpg" alt="Abstract Art 2" />
+              <img src="abstract3.jpg" alt="Abstract Art 3" />
+            </div>
+          </div>
+        </div>
+
+        <div class="art-category">
+          <h3>Painting</h3>
+          <div class="sliding-window">
+            <div class="slides">
+              <img src="painting1.jpg" alt="Painting 1" />
+              <img src="painting2.jpg" alt="Painting 2" />
+              <img src="painting3.jpg" alt="Painting 3" />
+            </div>
+          </div>
+        </div>
+
+        <div class="art-category">
+          <h3>Doodle</h3>
+          <div class="sliding-window">
+            <div class="slides">
+              <img src="doodle1.jpg" alt="Doodle 1" />
+              <img src="doodle2.jpg" alt="Doodle 2" />
+              <img src="doodle3.jpg" alt="Doodle 3" />
+            </div>
+          </div>
+        </div>
+
+        <div class="art-category">
+          <h3>Audio Visual</h3>
+          <div class="audio-grid">
+            <audio controls>
+              <source src="audio1.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+            <audio controls>
+              <source src="audio2.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Moodal - All rights reserved</p>
+      <p>Developed for FYP</p>
+    </footer>
+
+    <script>
+      // Automatic sliding functionality with 3-second delay
+      document.querySelectorAll(".sliding-window").forEach((window) => {
+        const slides = window.querySelector(".slides");
+        const totalSlides = slides.children.length;
+        let currentSlide = 0;
+
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }, 3000);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moodal: A Mood based Digital Art Generator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo-space">
+        <img src="logo.png" alt="Logo" class="logo" />
+      </div>
+      <h1 class="project-name">Moodal: A Mood based Digital Art Generator</h1>
+      <nav>
+        <ul>
+          <li><a href="index.htm">Home</a></li>
+          <li><a href="about.htm">About</a></li>
+          <li><a href="gallery.htm">Gallery</a></li>
+          <li><a href="contact.htm">Contact Us</a></li>
+          <li>
+            <button
+              id="authButton"
+              class="auth-button"
+              onclick="openAuthPopup()"
+            >
+              Login/Register
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="container">
+      <section class="hero-section">
+        <h1>Welcome to Moodal</h1>
+        <p>Transform your emotions into stunning digital art.</p>
+        <button class="cta-button">Get Started</button>
+      </section>
+
+      <section class="input-section">
+        <h2>Upload Your Image</h2>
+        <input type="file" id="imageUpload" accept="image/*" />
+      </section>
+
+      <section class="mood-section">
+        <h2>Select Your Mood</h2>
+        <div class="mood-buttons">
+          <button class="mood-button" data-mood="happy">Happy</button>
+          <button class="mood-button" data-mood="sad">Sad</button>
+          <button class="mood-button" data-mood="angry">Angry</button>
+          <button class="mood-button" data-mood="calm">Calm</button>
+        </div>
+      </section>
+
+      <section class="style-section">
+        <h2>Choose Art Style</h2>
+        <select id="styleSelect">
+          <option value="abstract">Abstract</option>
+          <option value="watercolor">Watercolor</option>
+          <option value="oil">Oil Painting</option>
+          <option value="sketch">Sketch</option>
+          <option value="pop-art">Pop Art</option>
+          <option value="impressionism">Impressionism</option>
+          <option value="doodal">Cubism</option>
+        </select>
+      </section>
+
+      <section class="camera-section">
+        <h2>Use Your Camera</h2>
+        <button id="cameraButton">Open Camera</button>
+        <video id="cameraStream" autoplay></video>
+        <button id="captureButton" style="display: none">Capture</button>
+      </section>
+
+      <section class="voice-section">
+        <h2>Record Your Voice</h2>
+        <button id="startRecording">Start Recording</button>
+        <button id="stopRecording" disabled>Stop Recording</button>
+        <p id="recordingStatus">Not recording</p>
+      </section>
+
+      <section class="art-display">
+        <h2>Your Generated Art</h2>
+        <div id="artCanvas"></div>
+        <a href="generated-art.html" class="view-art-button">View Full Art</a>
+      </section>
+    </div>
+
+    <div id="authPopup" class="popup" style="display: none">
+      <div class="popup-content">
+        <div class="popup-logo">
+          <img src="logo login.png" alt="Moodal Logo" class="auth-logo" />
+        </div>
+        <span id="closePopup" class="close-button">&times;</span>
+        <div id="loginForm" class="auth-form">
+          <h2>Login</h2>
+          <form>
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="loginUsername" name="username" required />
+            <label for="loginPassword">Password:</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="password"
+              required
+            />
+            <button type="submit">Login</button>
+          </form>
+          <p>
+            Don't have an account? <a href="#" id="showRegister">Register</a>
+          </p>
+        </div>
+        <div id="registerForm" class="auth-form" style="display: none">
+          <h2>Register</h2>
+          <form>
+            <label for="registerEmail">Email or Mobile No.:</label>
+            <input
+              type="text"
+              id="registerEmail"
+              name="emailOrMobile"
+              required
+            />
+            <button type="submit">Register</button>
+          </form>
+          <div class="social-login">
+            <p>Or sign in with:</p>
+            <button class="social-button">
+              <img src="google-logo.png" alt="Google" class="social-logo" />
+              Google
+            </button>
+            <button class="social-button">
+              <img src="facebook-logo.png" alt="Facebook" class="social-logo" />
+              Facebook
+            </button>
+          </div>
+          <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+        </div>
+      </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="script.js" defer></script>
+    <script>
+      function openAuthPopup() {
+        const authPopup = document.getElementById("authPopup");
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
+        authPopup.style.display = "block";
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+        document.querySelector(".container").classList.add("overlay");
+      }
+
+      function closeAuthPopup() {
+        const authPopup = document.getElementById("authPopup");
+        authPopup.style.display = "none";
+        document.querySelector(".container").classList.remove("overlay");
+      }
+
+      window.addEventListener("click", (e) => {
+        const authPopup = document.getElementById("authPopup");
+        if (e.target === authPopup) {
+          closeAuthPopup();
+        }
+      });
+    </script>
+    <footer>
+      <p>&copy; 2025 Moodal - All rights reserved</p>
+      <p>Developed for FYP</p>
+    </footer>
+  </body>
+</html>
