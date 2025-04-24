@@ -36,7 +36,9 @@
         transition: transform 1s ease-in-out;
       }
       .slides img {
-        width: 100%;
+        width: auto; /* Maintain aspect ratio */
+        height: 250px; /* Set a fixed height for better visibility */
+        margin: 0 auto; /* Center the images */
         flex-shrink: 0;
       }
     </style>
@@ -82,38 +84,34 @@
         </div>
 
         <div class="art-category">
-          <h3>Painting</h3>
+          <h3>Oil Painting</h3>
           <div class="sliding-window">
             <div class="slides">
-              <img src="painting1.jpg" alt="Painting 1" />
-              <img src="painting2.jpg" alt="Painting 2" />
-              <img src="painting3.jpg" alt="Painting 3" />
+              <img src="images/oil.1.png" alt="oil Painting 1" />
+              <img src="painting2.jpg" alt="oil Painting 2" />
+              <img src="painting3.jpg" alt="oil Painting 3" />
             </div>
           </div>
         </div>
 
         <div class="art-category">
-          <h3>Doodle</h3>
+          <h3>Sketch</h3>
           <div class="sliding-window">
             <div class="slides">
-              <img src="doodle1.jpg" alt="Doodle 1" />
-              <img src="doodle2.jpg" alt="Doodle 2" />
-              <img src="doodle3.jpg" alt="Doodle 3" />
+              <img src="images/sketch_1.png" alt="sketch 1" />
+              <img src="doodle2.jpg" alt="Sketch 2" />
+              <img src="doodle3.jpg" alt="sketch 3" />
             </div>
           </div>
         </div>
-
         <div class="art-category">
-          <h3>Audio Visual</h3>
-          <div class="audio-grid">
-            <audio controls>
-              <source src="audio1.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-            <audio controls>
-              <source src="audio2.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
+          <h3>Watercolor</h3>
+          <div class="sliding-window">
+            <div class="slides">
+              <img src="images/watercolor_1.png" alt="watercolor 1" />
+              <img src="doodle2.jpg" alt="watercolor 2" />
+              <img src="doodle3.jpg" alt="watercolor 3" />
+            </div>
           </div>
         </div>
       </section>
@@ -128,12 +126,22 @@
       // Automatic sliding functionality with 3-second delay
       document.querySelectorAll(".sliding-window").forEach((window) => {
         const slides = window.querySelector(".slides");
-        const totalSlides = slides.children.length;
+        const images = slides.children;
+        const totalSlides = images.length;
         let currentSlide = 0;
+
+        // Hide all images except the current one
+        const updateVisibility = () => {
+          Array.from(images).forEach((img, index) => {
+            img.style.display = index === currentSlide ? "block" : "none";
+          });
+        };
+
+        updateVisibility(); // Initial visibility setup
 
         setInterval(() => {
           currentSlide = (currentSlide + 1) % totalSlides;
-          slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+          updateVisibility();
         }, 3000);
       });
     </script>

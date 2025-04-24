@@ -19,13 +19,7 @@
           <li><a href="gallery.htm">Gallery</a></li>
           <li><a href="contact.htm">Contact Us</a></li>
           <li>
-            <button
-              id="authButton"
-              class="auth-button"
-              onclick="openAuthPopup()"
-            >
-              Login/Register
-            </button>
+            <button id="authLink" class="auth-button">Login/Register</button>
           </li>
         </ul>
       </nav>
@@ -41,36 +35,63 @@
       <section class="input-section">
         <h2>Upload Your Image</h2>
         <input type="file" id="imageUpload" accept="image/*" />
+        <img
+          id="imagePreview"
+          src=""
+          alt="Image Preview"
+          style="display: none; max-width: 100%; margin-top: 10px"
+        />
+        <h2>Describe Art Attributes</h2>
+        <textarea
+          id="artAttributes"
+          placeholder="Describe the attributes for your art..."
+          rows="4"
+          style="width: 100%; resize: none"
+        ></textarea>
       </section>
 
       <section class="mood-section">
         <h2>Select Your Mood</h2>
-        <div class="mood-buttons">
+        <div class="mood-buttons" id="moodButtons">
+          <!-- Initial 10 mood buttons -->
           <button class="mood-button" data-mood="happy">Happy</button>
           <button class="mood-button" data-mood="sad">Sad</button>
           <button class="mood-button" data-mood="angry">Angry</button>
           <button class="mood-button" data-mood="calm">Calm</button>
+          <button class="mood-button" data-mood="excited">Excited</button>
+          <button class="mood-button" data-mood="relaxed">Relaxed</button>
+          <button class="mood-button" data-mood="nostalgic">Nostalgic</button>
+          <button class="mood-button" data-mood="romantic">Romantic</button>
+          <button class="mood-button" data-mood="mysterious">Mysterious</button>
+          <button class="mood-button" data-mood="energetic">Energetic</button>
         </div>
+        <button id="toggleMoodsButton" class="toggle-moods-button">
+          Other Moods
+        </button>
       </section>
 
-      <section class="style-section">
+      <section class="style-section" id="styleSection">
         <h2>Choose Art Style</h2>
-        <select id="styleSelect">
-          <option value="abstract">Abstract</option>
-          <option value="watercolor">Watercolor</option>
-          <option value="oil">Oil Painting</option>
-          <option value="sketch">Sketch</option>
-          <option value="pop-art">Pop Art</option>
-          <option value="impressionism">Impressionism</option>
-          <option value="doodal">Cubism</option>
-        </select>
+        <div class="style-buttons">
+          <button class="style-button" data-style="abstract">Abstract</button>
+          <button class="style-button" data-style="watercolor">
+            Watercolor
+          </button>
+          <button class="style-button" data-style="oil">Oil Painting</button>
+          <button class="style-button" data-style="sketch">Sketch</button>
+          <button class="style-button" data-style="pop-art">Pop Art</button>
+          <button class="style-button" data-style="impressionism">
+            Impressionism
+          </button>
+          <button class="style-button" data-style="cubism">Cubism</button>
+          <button class="style-button" data-style="doodal">Doodal</button>
+        </div>
       </section>
 
       <section class="camera-section">
         <h2>Use Your Camera</h2>
-        <button id="cameraButton">Open Camera</button>
         <video id="cameraStream" autoplay></video>
-        <button id="captureButton" style="display: none">Capture</button>
+        <button id="captureButton">Capture</button>
       </section>
 
       <section class="voice-section">
@@ -83,15 +104,26 @@
       <section class="art-display">
         <h2>Your Generated Art</h2>
         <div id="artCanvas"></div>
-        <a href="generated-art.html" class="view-art-button">View Full Art</a>
+        <button
+          id="generateArtButton"
+          class="generate-button"
+          onclick="generateDigitalArt()"
+        >
+          Generate
+        </button>
+        <button
+          id="saveArtButton"
+          class="save-button"
+          style="margin-left: 30px"
+          onclick="saveArt()"
+        >
+          Save
+        </button>
       </section>
     </div>
 
     <div id="authPopup" class="popup" style="display: none">
       <div class="popup-content">
-        <div class="popup-logo">
-          <img src="logo login.png" alt="Moodal Logo" class="auth-logo" />
-        </div>
         <span id="closePopup" class="close-button">&times;</span>
         <div id="loginForm" class="auth-form">
           <h2>Login</h2>
@@ -121,50 +153,31 @@
               name="emailOrMobile"
               required
             />
+            <label for="registerPassword">Password:</label>
+            <input
+              type="password"
+              id="registerPassword"
+              name="password"
+              required
+            />
             <button type="submit">Register</button>
+            <p>OR Register with:</p>
+            <button id="reg_google" class="social-register-button">
+              <img src="#" alt="Google Icon" /> Register with Google
+            </button>
+            <button id="reg_facebook" class="social-register-button">
+              <img src="#" alt="Facebook Icon" /> Register with Facebook
+            </button>
           </form>
-          <div class="social-login">
-            <p>Or sign in with:</p>
-            <button class="social-button">
-              <img src="google-logo.png" alt="Google" class="social-logo" />
-              Google
-            </button>
-            <button class="social-button">
-              <img src="facebook-logo.png" alt="Facebook" class="social-logo" />
-              Facebook
-            </button>
-          </div>
-          <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
         </div>
       </div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <div id="loadingOverlay" class="loading-overlay" style="display: none">
+      <div class="loading-spinner"></div>
+      <p>Generating your art...</p>
+    </div>
+
     <script src="script.js" defer></script>
-    <script>
-      function openAuthPopup() {
-        const authPopup = document.getElementById("authPopup");
-        const loginForm = document.getElementById("loginForm");
-        const registerForm = document.getElementById("registerForm");
-        authPopup.style.display = "block";
-        loginForm.style.display = "block";
-        registerForm.style.display = "none";
-        document.querySelector(".container").classList.add("overlay");
-      }
-
-      function closeAuthPopup() {
-        const authPopup = document.getElementById("authPopup");
-        authPopup.style.display = "none";
-        document.querySelector(".container").classList.remove("overlay");
-      }
-
-      window.addEventListener("click", (e) => {
-        const authPopup = document.getElementById("authPopup");
-        if (e.target === authPopup) {
-          closeAuthPopup();
-        }
-      });
-    </script>
     <footer>
       <p>&copy; 2025 Moodal - All rights reserved</p>
       <p>Developed for FYP</p>

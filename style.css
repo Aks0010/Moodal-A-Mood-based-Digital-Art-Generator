@@ -104,6 +104,24 @@ header nav a:hover {
   background-color: #d18f00;
 }
 
+.generate-button,
+.save-button {
+  padding: 15px 30px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.generate-button:hover,
+.save-button:hover {
+  background-color: #155c24;
+}
+
 .container {
   max-width: 1200px;
   margin: 20px auto;
@@ -125,10 +143,34 @@ section {
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+/* Styling for the image upload button */
+#imageUpload {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+#imageUpload:hover {
+  background-color: #e6e6e6;
+  border-color: #888;
+}
+
+#imageUpload:focus {
+  outline: none;
+  border-color: #555;
+}
 
 .input-section,
 .mood-section,
 .style-section,
+.camera-section,
+.voice-section,
 .art-display {
   margin-bottom: 20px;
   padding: 15px;
@@ -138,7 +180,10 @@ section {
 
 .mood-section h2,
 .style-section h2,
-.art-display h2 {
+.art-display h2,
+.input-section,
+.camera-section,
+.voice-section {
   margin-top: 0;
 }
 
@@ -160,24 +205,22 @@ section {
   font-size: 1em;
 }
 
-.mood-button:hover {
-  filter: brightness(0.8); /* Slightly brighter on hover */
+#toggleMoodsButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff; /* Match other button styles */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  align-self: center; /* Center within the mood section */
 }
 
-.mood-button[data-mood="happy"] {
-  background-color: #f3ce5f; /* Light Yellow */
-}
-
-.mood-button[data-mood="sad"] {
-  background-color: #86b3cb; /* Light Blue-Gray */
-}
-
-.mood-button[data-mood="angry"] {
-  background-color: #f18c8c; /* Light Red */
-}
-
-.mood-button[data-mood="calm"] {
-  background-color: #78d299; /* Light Green */
+#toggleMoodsButton:hover {
+  background-color: #0056b3; /* Darker shade for hover */
 }
 
 #styleSelect {
@@ -185,6 +228,50 @@ section {
   font-size: 1em;
   border-radius: 5px;
   border: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+.style-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.style-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.style-button {
+  padding: 15px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Selected mood/style button styles */
+.mood-button.selected,
+.style-button.selected {
+  background-color: #4caf50;
+  color: rgb(2, 2, 2);
+  border: 2px solid #4caf50;
+}
+
+.mood-button,
+.style-button {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mood-button:hover,
+.style-button:hover {
+  background-color: #bbb;
+  color: #fff; /* White text for better contrast */
 }
 
 #artCanvas {
@@ -206,6 +293,12 @@ section {
 .camera-section,
 .voice-section {
   margin: 20px 0;
+}
+
+.voice-section audio {
+  margin-top: 10px;
+  width: 100%;
+  max-width: 600px;
 }
 
 #cameraStream {
@@ -233,21 +326,6 @@ section {
   background-color: #d18f00;
 }
 
-.view-art-button {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.view-art-button:hover {
-  background-color: #555;
-}
-
 footer {
   background-color: #444;
   color: #ccc;
@@ -263,12 +341,13 @@ footer p {
   font-size: 0.9em;
 }
 
+/* Popup overlay */
 .popup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -277,10 +356,11 @@ footer p {
   padding: 10px; /* Add padding for smaller screens */
 }
 
+/* Popup content */
 .popup-content {
   background-color: #fff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -289,40 +369,25 @@ footer p {
   margin: 0 auto; /* Center the popup horizontally */
 }
 
-.popup-logo {
-  margin: 0px auto; /* Center the logo */
-  width: 150px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .popup-logo {
-    width: 120px; /* Adjust width for tablets */
-  }
-
-  .popup-content {
-    max-width: 90%; /* Adjust width for tablets */
-    padding: 15px; /* Adjust padding for tablets */
-  }
-}
-
-@media (max-width: 480px) {
-  .popup-logo {
-    width: 100px; /* Adjust width for mobile devices */
-  }
-
-  .popup-content {
-    max-width: 95%; /* Adjust width for mobile devices */
-    padding: 10px; /* Adjust padding for mobile devices */
-  }
+/* Close button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
 }
 
 .overlay {
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* Overlay effect for the container */
+.container.overlay {
+  filter: blur(5px);
 }
 
 .success-message {
@@ -336,20 +401,10 @@ footer p {
   z-index: 1001;
 }
 
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-}
-
 .auth-form h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
   text-align: center;
+  margin-bottom: 15px;
+  font-size: 24px;
 }
 
 .auth-form label {
@@ -363,7 +418,7 @@ footer p {
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .auth-form button {
@@ -372,9 +427,8 @@ footer p {
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
 }
 
 .auth-form button:hover {
@@ -447,6 +501,73 @@ footer p {
 .auth-button:active {
   background-color: #003f7f;
   transform: scale(0.95);
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 139, 0.8); /* Dark blue background */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: column;
+}
+
+.loading-text {
+  font-size: 1.5em;
+  color: #fff;
+  margin-bottom: 10px;
+  animation: fadeInOut 2s infinite; /* Text fade animation */
+}
+
+.dots {
+  display: inline-block;
+}
+
+.dots span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 6px;
+  background-color: #fff;
+  border-radius: 50%;
+  animation: bounce 1.5s infinite ease-in-out; /* Bounce animation */
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+/* Keyframes for fade-in-out animation */
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Keyframes for bounce animation */
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
 }
 
 /* Responsive Design */
